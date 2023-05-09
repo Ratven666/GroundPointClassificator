@@ -65,15 +65,14 @@ class Scan(ScanABC):
         """
         return iter(ScanIterator(self))
 
-    @staticmethod
-    def delete_scan(scan_id, db_connection=None):
+    def delete_scan(self, db_connection=None):
         """
         Удаляет запись скана из БД
         :param scan_id: id скана который требуется удалить из БД
         :param db_connection: Открытое соединение с БД
         :return: None
         """
-        stmt = delete(Tables.scans_db_table).where(Tables.scans_db_table.c.id == scan_id)
+        stmt = delete(Tables.scans_db_table).where(Tables.scans_db_table.c.id == self.id)
         if db_connection is None:
             with engine.connect() as db_connection:
                 db_connection.execute(stmt)

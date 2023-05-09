@@ -8,7 +8,7 @@ class PointABC(ABC):
 
     __slots__ = ["id", "X", "Y", "Z", "R", "G", "B", "is_ground"]
 
-    def __init__(self, X, Y, Z, R=1, G=1, B=1, is_ground=None, id_=None):
+    def __init__(self, X, Y, Z, R=0, G=0, B=0, is_ground=None, id_=None):
         self.id = id_
         self.X, self.Y, self.Z = X, Y, Z
         self.R, self.G, self.B = R, G, B

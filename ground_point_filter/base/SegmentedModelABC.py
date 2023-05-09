@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from sqlalchemy import select, desc, update, insert, and_, delete
 
 from CONFIG import LOGGER
+from ground_point_filter.base.sm_utils.plotters.HistMSEPlotterPlotly import HistMSEPlotterPlotly
 from ground_point_filter.base.sm_utils.plotters.MsePlotterPlotly import MsePlotterPlotly
 from ground_point_filter.base.sm_utils.plotters.SegmentModelPlotly import SegmentModelPlotly
 from ground_point_filter.start_db import Tables, engine
@@ -102,6 +103,19 @@ class SegmentedModelABC(ABC):
         :return: None
         """
         plotter.plot(self)
+
+    def plot_mse_hist(self, *models, plotter=HistMSEPlotterPlotly()):
+        """
+        Вывод гистограммы СКП модели
+        :param models: сегменитрованные модели которые нужно отрисовать на совместной гистограмме
+        :param plotter: объект определяющий логику отображения гистограммы модели
+        :return: None
+        """
+
+        if len(models) == 0:
+            plotter.plot([self])
+        else:
+            plotter.plot(models)
 
     def _load_cell_data_from_db(self, db_connection):
         """

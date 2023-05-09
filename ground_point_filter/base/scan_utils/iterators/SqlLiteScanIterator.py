@@ -24,7 +24,8 @@ class SqlLiteScanIterator:
                                                     p.R, p.G, p.B, p.is_ground
                                                     FROM points p
                                                     JOIN points_scans ps ON ps.point_id = p.id
-                                                    WHERE ps.scan_id = (?)""", (self.scan_id,)))
+                                                    WHERE ps.scan_id = (?) AND ps.is_active = True""", (self.scan_id,)))
+
         return self.generator
 
     def __next__(self):

@@ -1,7 +1,6 @@
 from threading import Lock
 
-
-from sqlalchemy import Table, Column, Integer, Float, String, BOOLEAN, ForeignKey, Enum
+from sqlalchemy import Table, Column, Integer, Float, String, Boolean, ForeignKey, Enum
 
 from ground_point_filter.base.sm_utils.DemTypeEnum import DemTypeEnum
 
@@ -42,10 +41,10 @@ class TableInitializer(metaclass=SingletonMeta):
                                 Column("X", Float, nullable=False),
                                 Column("Y", Float, nullable=False),
                                 Column("Z", Float, nullable=False),
-                                Column("R", Integer, default=1),
-                                Column("G", Integer, default=1),
-                                Column("B", Integer, default=1),
-                                Column("is_ground", BOOLEAN, default=None),
+                                Column("R", Integer, default=0),
+                                Column("G", Integer, default=0),
+                                Column("B", Integer, default=0),
+                                Column("is_ground", Boolean, default=None),
                                 )
         return points_db_table
 
@@ -65,8 +64,11 @@ class TableInitializer(metaclass=SingletonMeta):
 
     def __create_points_scans_db_table(self):
         points_scans_db_table = Table("points_scans", self.__db_metadata,
-                                      Column("point_id", Integer, ForeignKey("points.id"), primary_key=True),
-                                      Column("scan_id", Integer, ForeignKey("scans.id"), primary_key=True)
+                                      Column("point_id", Integer, ForeignKey("points.id", ondelete="CASCADE"),
+                                             primary_key=True),
+                                      Column("scan_id", Integer, ForeignKey("scans.id", ondelete="CASCADE"),
+                                             primary_key=True),
+                                      Column("is_active", Boolean, default=True)
                                       )
         return points_scans_db_table
 
@@ -79,7 +81,7 @@ class TableInitializer(metaclass=SingletonMeta):
         return imported_files_table
 
     def __create_voxels_db_table(self):
-        voxels_db_table = Table("voxels",  self.__db_metadata,
+        voxels_db_table = Table("voxels", self.__db_metadata,
                                 Column("id", Integer, primary_key=True),
                                 Column("vxl_name", String, nullable=False, unique=True, index=True),
                                 Column("X", Float),

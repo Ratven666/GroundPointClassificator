@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, and_
 
 from ground_point_filter.base.Point import Point
 from ground_point_filter.start_db import engine, Tables
@@ -9,12 +9,14 @@ class BaseScanIterator:
     Универсальный иттератор для сканов из БД
     Реализован средствами sqlalchemy
     """
+
     def __init__(self, scan):
         self.__scan = scan
         self.__engine = engine.connect()
-        self.__select = select(Tables.points_db_table).\
-            join(Tables.points_scans_db_table, Tables.points_scans_db_table.c.point_id == Tables.points_db_table.c.id).\
-            where(self.__scan.id == Tables.points_scans_db_table.c.scan_id)
+        self.__select = select(Tables.points_db_table). \
+            join(Tables.points_scans_db_table, Tables.points_scans_db_table.c.point_id == Tables.points_db_table.c.id). \
+            where(and_(self.__scan.id == Tables.points_scans_db_table.c.scan_id,
+                       Tables.points_scans_db_table.c.is_active == True))
         self.__query = self.__engine.execute(self.__select)
         self.__iterator = None
 

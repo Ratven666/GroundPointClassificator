@@ -1,3 +1,4 @@
+from ground_point_filter.GroundFilter import GroundFilter
 from ground_point_filter.base.DemModel import DemModel
 from ground_point_filter.base.PlaneModel import PlaneModel
 from ground_point_filter.base.VoxelModel import VoxelModel
@@ -12,42 +13,26 @@ def main():
     create_db()
 
     scan_full = Scan("Forest_full")
-    scan_full.load_scan_from_file(file_name="src/forest_full_05.txt")
+    scan_full.load_scan_from_file(file_name="src/New_1.txt")
     # scan_full.save_scan_in_file("forest_filt_1.txt")
+    vm1 = VoxelModel(scan_full, 0.25, dx=0.0, dy=0.0)
+    vm2 = VoxelModel(scan_full, 0.25, dx=0.25, dy=0.25)
+    vm3 = VoxelModel(scan_full, 0.25, dx=0.5, dy=0.5)
+    vm4 = VoxelModel(scan_full, 0.25, dx=0.75, dy=0.75)
 
-    scan_gp = Scan("Forest_gp_m")
-    scan_gp.load_scan_from_file(file_name="src/forest_gp_m_1.txt")
-    scan_gp.load_scan_from_file(file_name="src/forest_gp_m_2.txt")
-    scan_gp.load_scan_from_file(file_name="src/forest_gp_m_3.txt")
-    # scan_full.plot()
 
-    vm_full = VoxelModel(scan_full, 20)
-    vm_gp = VoxelModel(scan_gp, 10)
+    pm1 = DemModel(vm1)
+    pm2 = DemModel(vm2)
+    pm3 = DemModel(vm3)
+    pm4 = DemModel(vm4)
 
-    plane_model_full = PlaneModel(vm_full)
-    plane_model_gp = PlaneModel(vm_gp)
-    # plane_model_full.plot()
-    # plane_model_gp.plot_mse()
-    # plane_model_gp.plot_mse_hist()
-    #
-    # # plane_model_full.plot_mse()
-    # plane_model_full.plot_mse_hist()
 
-    # PointFilterByModelMSE(scan_full, full_dem_model=plane_model_full,
-    #                       ground_dem_model=plane_model_gp,
-    #                       k_value=6).filter_scan()
-    PointFilterMedian(scan_full, full_dem_model=plane_model_full, k_value=3).filter_scan()
-    plane_model_full.delete_model()
-    plane_model_full = PlaneModel(vm_full)
-    PointFilterMedian(scan_full, full_dem_model=plane_model_full, k_value=4)
+    pm1.plot_mse()
+    pm2.plot_mse()
+    pm3.plot_mse()
+    pm4.plot_mse()
 
-    scan_full.save_scan_in_file("forest_filt_1.txt")
-
-    # plane_model_full.plot_mse()
-    # plane_model_full.plot_mse_hist()
-
-    # scan_full.plot()
-
+    # GroundFilter(scan_full, max_v=1.5, k_value=3).filter_scan(n=5, step=9)
 
 if __name__ == "__main__":
     main()

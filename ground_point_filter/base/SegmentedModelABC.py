@@ -58,8 +58,12 @@ class SegmentedModelABC(ABC):
         :param point: точка для которой нужна соответствующая ячейка
         :return: объект ячейки модели, содержащая точку point
         """
-        X = point.X // self.voxel_model.step * self.voxel_model.step
-        Y = point.Y // self.voxel_model.step * self.voxel_model.step
+        # X = point.X // self.voxel_model.step * self.voxel_model.step
+        # Y = point.Y // self.voxel_model.step * self.voxel_model.step
+        vxl_md_X = int((point.X - self.voxel_model.min_X) // self.voxel_model.step)
+        vxl_md_Y = int((point.Y - self.voxel_model.min_Y) // self.voxel_model.step)
+        X = self.voxel_model.min_X + vxl_md_X * self.voxel_model.step
+        Y = self.voxel_model.min_Y + vxl_md_Y * self.voxel_model.step
         if self.voxel_model.is_2d_vxl_mdl is False:
             Z = point.Z // self.voxel_model.step * self.voxel_model.step
         else:

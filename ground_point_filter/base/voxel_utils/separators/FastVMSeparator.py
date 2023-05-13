@@ -84,7 +84,7 @@ class FastVMSeparator:
 
     def __init_voxels_id(self):
         """
-        Иничиирует в сканы и воксели модели id
+        Инициирует в воксели модели id
         :return: None
         """
         last_voxels_id_stmt = (select(Tables.voxels_db_table.c.id).order_by(desc("id")))

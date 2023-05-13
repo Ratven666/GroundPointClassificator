@@ -1,21 +1,12 @@
-from statistics import median
-
 from ground_point_filter.point_filters.PointFilterABC import PointFilterABC
 
 
-class PointFilterMedian(PointFilterABC):
+class PointFilterMaxV(PointFilterABC):
 
-    def __init__(self, scan, dem_model, k_value=2.5):
+    def __init__(self, scan, dem_model, max_v=2):
         super().__init__(scan)
         self.dem_model = dem_model
-        self.MSE = self.dem_model.mse_data
-        self.median = self.__calk_median_mse()
-        self.k_value = k_value
-        print(self.MSE, self.median)
-
-    def __calk_median_mse(self):
-        cell_mse = [cell.mse for cell in self.dem_model if cell.mse is not None]
-        return median(cell_mse)
+        self.max_v = max_v
 
     def _filter_logic(self, point):
         cell = self.dem_model.get_model_element_for_point(point)
@@ -26,7 +17,7 @@ class PointFilterMedian(PointFilterABC):
         except TypeError:
             return False
         v = point.Z - cell_z
-        if v <= self.median * self.k_value:
+        if v <= self.max_v:
             return True
         else:
             return False

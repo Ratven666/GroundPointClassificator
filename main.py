@@ -12,27 +12,20 @@ from ground_point_filter.start_db import create_db
 def main():
     create_db()
 
-    scan_full = Scan("Forest_full")
-    scan_full.load_scan_from_file(file_name="src/New_1.txt")
-    # scan_full.save_scan_in_file("forest_filt_1.txt")
-    vm1 = VoxelModel(scan_full, 0.25, dx=0.0, dy=0.0)
-    vm2 = VoxelModel(scan_full, 0.25, dx=0.25, dy=0.25)
-    vm3 = VoxelModel(scan_full, 0.25, dx=0.5, dy=0.5)
-    vm4 = VoxelModel(scan_full, 0.25, dx=0.75, dy=0.75)
+    # scan_full = Scan("Forest_full_5")
+    # scan_full.load_scan_from_file(file_name="src/forest_full.txt")
+    # GroundFilter(scan_full, max_v=2, k_value=3, n_vm=5).filter_scan(n=5, step=2.5)
 
-
-    pm1 = DemModel(vm1)
-    pm2 = DemModel(vm2)
-    pm3 = DemModel(vm3)
-    pm4 = DemModel(vm4)
-
-
-    pm1.plot_mse()
-    pm2.plot_mse()
-    pm3.plot_mse()
-    pm4.plot_mse()
-
-    # GroundFilter(scan_full, max_v=1.5, k_value=3).filter_scan(n=5, step=9)
-
+    # scan_full = Scan("Forest_full_2")
+    # scan_full.load_scan_from_file(file_name="src/forest_full.txt")
+    # GroundFilter(scan_full, max_v=2, k_value=3, n_vm=5).filter_scan(n=5, step=2.5)
+    #
+    scan_full = Scan("Forest_full_13")
+    scan_full.load_scan_from_file(file_name="src/forest_full_05.txt")
+    GroundFilter(scan_full, max_v=2, k_value=4, n_vm=5).filter_scan(n=5, step=5)
+    #
+    # scan_full = Scan("Forest_full_4")
+    # scan_full.load_scan_from_file(file_name="src/forest_full.txt")
+    # GroundFilter(scan_full, max_v=2, k_value=3, n_vm=5).filter_scan(n=5, step=5)
 if __name__ == "__main__":
     main()

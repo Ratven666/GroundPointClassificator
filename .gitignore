@@ -130,3 +130,5 @@ src/
 data_bases/
 
 forest_filt_1.txt
+
+*.txt

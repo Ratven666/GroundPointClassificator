@@ -20,6 +20,7 @@ def calk_scan_metrics(scan_id):
                       func.max(Tables.points_db_table.c.Z).label("max_Z")).where(and_(
                                Tables.points_scans_db_table.c.point_id == Tables.points_db_table.c.id,
                                Tables.points_scans_db_table.c.scan_id == Tables.scans_db_table.c.id,
+                               Tables.points_scans_db_table.c.is_active == 1,
                                Tables.scans_db_table.c.id == scan_id
                       ))
         scan_metrics = dict(db_connection.execute(stmt).mappings().first())

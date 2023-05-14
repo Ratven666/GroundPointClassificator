@@ -33,7 +33,7 @@ class TableInitializer(metaclass=SingletonMeta):
         self.dem_models_db_table = self.__create_dem_models_db_table()
         self.dem_cell_db_table = self.__create_dem_cell_db_table()
         self.plane_cell_db_table = self.__create_plane_cell_db_table()
-        # self.bi_cell_db_table = create_bi_cell_db_table(self.__db_metadata)
+        self.bi_cell_db_table = self.__create_bi_cell_db_table()
 
     def __create_points_db_table(self):
         points_db_table = Table("points", self.__db_metadata,
@@ -160,3 +160,24 @@ class TableInitializer(metaclass=SingletonMeta):
                                     Column("MSE", Float, default=None)
                                     )
         return plane_cell_db_table
+
+    def __create_bi_cell_db_table(self):
+        bi_cell_db_table = Table("bi_cells", self.__db_metadata,
+                                 Column("voxel_id", Integer,
+                                        ForeignKey("voxels.id", ondelete="CASCADE"),
+                                        primary_key=True),
+                                 Column("base_model_id", Integer,
+                                        ForeignKey("dem_models.id", ondelete="CASCADE"),
+                                        primary_key=True),
+                                 Column("Z_ld", Float),
+                                 Column("Z_lu", Float),
+                                 Column("Z_rd", Float),
+                                 Column("Z_ru", Float),
+                                 Column("MSE_ld", Float),
+                                 Column("MSE_lu", Float),
+                                 Column("MSE_rd", Float),
+                                 Column("MSE_ru", Float),
+                                 Column("r", Integer),
+                                 Column("MSE", Float, default=None)
+                                 )
+        return bi_cell_db_table
